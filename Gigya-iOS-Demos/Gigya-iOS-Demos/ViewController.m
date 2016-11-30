@@ -114,20 +114,16 @@
 
 
 - (IBAction)showScreenSet:(id)sender {
-    NSMutableDictionary *params = [NSMutableDictionary dictionary];
-    [params setObject:@"DefaultMobile-RegistrationLogin" forKey:@"screenSet"];
-    [Gigya showPluginDialogOver:self plugin:@"accounts.screenSet" parameters:params completionHandler:^(BOOL closedByUser, NSError *error) {
-            if (!error) {
-            // Login was successful
-            }
-            else {
-                // Handle error
-                AppDelegate *ag = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-                [ag alertForView:self title:@"Error with login" message:error.localizedDescription button:@"OK"];
-            }
+    [Gigya showPluginDialogOver:self plugin:@"accounts.screenSet" parameters:@{@"screenSet":@"Mobile-login-shea", @"startScreen":@"gigya-register-screen"} completionHandler:^(BOOL closedByUser, NSError * _Nullable error) {
+        if (error == nil && [Gigya isSessionValid]) {
+            NSLog(@"success");
         }
-        delegate:self
-    ];
+        else {
+            NSLog(@"failed");
+            NSLog(@"error = %@", error);
+            NSLog(@"Gigya.isSessionValid = %@", [Gigya isSessionValid] ? @"YES" : @"NO");
+        }
+    } delegate:self];
 }
 
 - (void)pluginView:(GSPluginView *)pluginView finishedLoadingPluginWithEvent:(NSDictionary *)event {
