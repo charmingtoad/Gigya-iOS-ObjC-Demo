@@ -115,14 +115,19 @@
 
 - (IBAction)showScreenSet:(id)sender {
     [Gigya showPluginDialogOver:self plugin:@"accounts.screenSet" parameters:@{@"screenSet":@"Mobile-login-shea", @"startScreen":@"gigya-register-screen"} completionHandler:^(BOOL closedByUser, NSError * _Nullable error) {
-        if (error == nil && [Gigya isSessionValid]) {
-            NSLog(@"success");
-        }
-        else {
-            NSLog(@"failed");
-            NSLog(@"error = %@", error);
-            NSLog(@"Gigya.isSessionValid = %@", [Gigya isSessionValid] ? @"YES" : @"NO");
-        }
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(30.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            if (error == nil && [Gigya isSessionValid]) {
+                NSLog(@"success");
+            }
+            else {
+                NSLog(@"failed");
+                NSLog(@"error = %@", error);
+                NSLog(@"Gigya.isSessionValid = %@", [Gigya isSessionValid] ? @"YES" : @"NO");
+            }
+        });
+        
+        
     } delegate:self];
 }
 
