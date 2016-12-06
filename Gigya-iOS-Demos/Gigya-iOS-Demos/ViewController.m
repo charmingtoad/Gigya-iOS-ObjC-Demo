@@ -114,18 +114,20 @@
 
 
 - (IBAction)showScreenSet:(id)sender {
+    
+        
     [Gigya showPluginDialogOver:self plugin:@"accounts.screenSet" parameters:@{@"screenSet":@"Mobile-login-shea", @"startScreen":@"gigya-register-screen"} completionHandler:^(BOOL closedByUser, NSError * _Nullable error) {
         
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(30.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            if (error == nil && [Gigya isSessionValid]) {
-                NSLog(@"success");
-            }
-            else {
-                NSLog(@"failed");
-                NSLog(@"error = %@", error);
-                NSLog(@"Gigya.isSessionValid = %@", [Gigya isSessionValid] ? @"YES" : @"NO");
-            }
-        });
+        if (!error) {
+            // Login was successful
+            AppDelegate *ag = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+            [ag alertForView:self title:@"Login success" message:error.localizedDescription button:@"OK"];
+        }
+        else {
+            // Handle error
+            AppDelegate *ag = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+            [ag alertForView:self title:@"Error with login" message:error.localizedDescription button:@"OK"];
+        }
         
         
     } delegate:self];
