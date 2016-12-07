@@ -120,8 +120,6 @@
         
         if (!error) {
             // Login was successful
-            AppDelegate *ag = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-            [ag alertForView:self title:@"Login success" message:error.localizedDescription button:@"OK"];
         }
         else {
             // Handle error
